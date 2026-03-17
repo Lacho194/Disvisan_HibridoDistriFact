@@ -1,0 +1,304 @@
+
+
+DisviFact_SiteMap_Disvisan.docx
+docx
+
+por favor tngo esto para hacer un sitemap por favor hacerlo map enserio un bosquejo por favor que se veo
+
+4:00 p. m.
+
+Preparó explicación breve del widget sitemap
+Preparó explicación breve del widget sitemap
+
+
+¡Aquí está tu mapa visual completo! Cómo usarlo:
+
+Explora por rol — haz clic en cualquier tarjeta para ver el detalle completo: subsecciones, ruta URL y notas de diseño. Puedes filtrar roles usando los botones de la leyenda de arriba.
+
+Badges de cada pantalla:
+
+🟠 OFFLINE — V-02 y V-06 (funcionan sin internet con IndexedDB)
+🟢 TIEMPO REAL — V-07, B-02, B-05, R-02, R-04, C-04, C-07 (WebSocket + STOMP)
+🟣 PDF — generación con iText (A-08, A-09, V-03, V-04, C-05, C-06, P-05)
+🟡 QR — solo P-05 (verificación pública sin login)
+Resumen rápido: 37 pantallas, 5 roles + acceso público, las únicas offline son las del vendedor en campo, y el chat es el único componente compartido entre 4 roles distintos.
+
+1773780572397_image.png
+1773780591283_image.png
+darme como un mapa algo asi ensrio un site map
+
+4:04 p. m.
+
+Construyendo sitemap interactivo con tarjetas jerárquicas conectadas
+Construyendo sitemap interactivo con tarjetas jerárquicas conectadas
+
+
+¡Ahí está el sitemap visual estilo mapa real! Cada tarjeta tiene:
+
+Cabecera con color del rol — igual a los sitemaps de referencia
+Código de pantalla (P-01, A-03, etc.)
+Wireframe interno simulando el contenido de cada pantalla (formularios, listas, dashboards, chats...)
+Badges de OFFLINE, TIEMPO REAL, PDF, QR
+Líneas curvas conectando pantallas relacionadas (login → dashboards, lista → detalle, etc.)
+Hover tooltip con ruta URL y nota de diseño
+Pasa el mouse por cualquier tarjeta para ver los detalles. Las líneas siguen el color de cada rol.
+
+Save this visual from earlier as an artifact: "disvifact_sitemap_visual"
+
+4:06 p. m.
+
+Orchestrated recreation and preservation of visual widget artifact
+Orchestrated recreation and preservation of visual widget artifact
+¡Listo! El sitemap está guardado como archivo HTML. Ábrelo en cualquier navegador y tendrás el mapa completo con tooltips interactivos y líneas de conexión, sin necesidad de internet ni instalaciones.
+
+Disvifact sitemap visual
+Code · HTML 
+
+
+Want to be notified when Claude responds?
+
+
+
+Claude is AI and can make mistakes. Please double-check responses.
+Disvifact sitemap visual · HTML
+Copy
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DisviFact — Site Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#1c2333;--line:#30363d;
+  --text:#e6edf3;--muted:#7d8590;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:auto}
+.sitemap-wrap{padding:28px 20px 40px;min-width:1100px;position:relative}
+h1{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;letter-spacing:-0.5px;color:var(--text);margin-bottom:6px}
+.subtitle{font-size:12px;color:var(--muted);margin-bottom:28px;letter-spacing:.5px}
+.canvas{position:relative}
+svg.lines{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.lane{display:flex;flex-direction:row;align-items:flex-start;gap:10px;margin-bottom:16px;position:relative}
+.lane-label{width:90px;flex-shrink:0;display:flex;align-items:center;gap:6px;padding-top:12px}
+.lane-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.lane-name{font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+.cards-row{display:flex;flex-direction:row;gap:10px;flex-wrap:wrap;flex:1}
+.scard{width:120px;flex-shrink:0;border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .18s,box-shadow .18s;position:relative;border:1px solid rgba(255,255,255,.07)}
+.scard:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 32px rgba(0,0,0,.5)}
+.scard-head{height:28px;display:flex;align-items:center;padding:0 8px;gap:5px}
+.scard-dots{display:flex;gap:3px}
+.scard-dot{width:5px;height:5px;border-radius:50%;opacity:.7}
+.scard-code{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;margin-left:auto;opacity:.8;letter-spacing:.3px}
+.scard-body{background:#161b22;padding:8px;min-height:80px}
+.scard-name{font-size:10px;font-weight:600;line-height:1.3;margin-bottom:6px;color:#e6edf3}
+.scard-route{font-family:'Space Mono',monospace;font-size:7.5px;color:#7d8590;margin-bottom:6px;word-break:break-all;line-height:1.4}
+.wf-line{height:3px;border-radius:2px;margin-bottom:3px;background:rgba(255,255,255,.1)}
+.wf-line.accent{background:rgba(255,255,255,.22)}
+.wf-line.short{width:55%}
+.wf-line.xshort{width:35%}
+.wf-btn{height:8px;border-radius:3px;margin-top:5px;background:rgba(255,255,255,.18);width:50%}
+.sbadges{display:flex;flex-wrap:wrap;gap:2px;margin-top:5px}
+.sbadge{font-size:7px;font-weight:700;padding:1px 4px;border-radius:8px;letter-spacing:.3px;text-transform:uppercase}
+.badge-off{background:#b5451b;color:#ffccbc}
+.badge-rt{background:#1a6b3a;color:#c8e6c9}
+.badge-pdf{background:#533483;color:#e1bee7}
+.badge-qr{background:#6b5300;color:#fff8e1}
+.tooltip{position:fixed;z-index:200;background:#1c2333;border:1px solid #30363d;border-radius:10px;padding:10px 12px;font-size:11px;max-width:220px;pointer-events:none;opacity:0;transition:opacity .15s;box-shadow:0 8px 24px rgba(0,0,0,.5)}
+.tooltip.show{opacity:1}
+.tt-code{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;margin-bottom:3px}
+.tt-name{font-size:12px;font-weight:600;color:#e6edf3;margin-bottom:4px}
+.tt-route{font-family:'Space Mono',monospace;font-size:9px;color:#7d8590;margin-bottom:6px}
+.tt-notes{font-size:10px;color:#8b949e;line-height:1.5}
+.conn{stroke-width:1.5;fill:none;stroke-linecap:round;stroke-dasharray:4 3;opacity:.4}
+</style>
+</head>
+<body>
+<div class="sitemap-wrap">
+  <h1>DisviFact — Site Map</h1>
+  <div class="subtitle">37 PANTALLAS · 6 SECCIONES · HIBRIDODISTRIFACT</div>
+  <div class="canvas" id="canvas">
+    <svg class="lines" id="svglines"></svg>
+    <div class="lane"><div class="lane-label"><span class="lane-dot" style="background:#9a8c98"></span><span class="lane-name">Público</span></div><div class="cards-row" id="row-P"></div></div>
+    <div class="lane"><div class="lane-label"><span class="lane-dot" style="background:#c77dff"></span><span class="lane-name">Admin</span></div><div class="cards-row" id="row-A"></div></div>
+    <div class="lane"><div class="lane-label"><span class="lane-dot" style="background:#ff7043"></span><span class="lane-name">Vendedor</span></div><div class="cards-row" id="row-V"></div></div>
+    <div class="lane"><div class="lane-label"><span class="lane-dot" style="background:#4caf50"></span><span class="lane-name">Bodeguero</span></div><div class="cards-row" id="row-B"></div></div>
+    <div class="lane"><div class="lane-label"><span class="lane-dot" style="background:#4fc3f7"></span><span class="lane-name">Repartidor</span></div><div class="cards-row" id="row-R"></div></div>
+    <div class="lane"><div class="lane-label"><span class="lane-dot" style="background:#ce93d8"></span><span class="lane-name">Cliente</span></div><div class="cards-row" id="row-C"></div></div>
+  </div>
+</div>
+<div class="tooltip" id="tooltip">
+  <div class="tt-code" id="tt-code"></div>
+  <div class="tt-name" id="tt-name"></div>
+  <div class="tt-route" id="tt-route"></div>
+  <div class="tt-notes" id="tt-notes"></div>
+</div>
+<script>
+const roles={
+  P:{color:'#4a4e69',light:'#9a8c98',dot1:'#9a8c98',dot2:'#6b728e',dot3:'#4a4e69'},
+  A:{color:'#533483',light:'#c77dff',dot1:'#c77dff',dot2:'#9b59b6',dot3:'#533483'},
+  V:{color:'#b5451b',light:'#ff7043',dot1:'#ff7043',dot2:'#e64a19',dot3:'#b5451b'},
+  B:{color:'#1a6b3a',light:'#4caf50',dot1:'#4caf50',dot2:'#2e7d32',dot3:'#1a6b3a'},
+  R:{color:'#0f4c75',light:'#4fc3f7',dot1:'#4fc3f7',dot2:'#0288d1',dot3:'#0f4c75'},
+  C:{color:'#6b3d7a',light:'#ce93d8',dot1:'#ce93d8',dot2:'#ab47bc',dot3:'#6b3d7a'},
+};
+const tagMap={OFFLINE:'badge-off','TIEMPO REAL':'badge-rt',PDF:'badge-pdf',QR:'badge-qr'};
+const screens=[
+  {code:'P-01',name:'Inicio de sesión',route:'/login',notes:'Punto de entrada de todos los roles. JWT en memoria al autenticar.',tags:[],wf:'form'},
+  {code:'P-02',name:'Registro distribuidor',route:'/registro',notes:'Crea el tenant de Disvisan. Envía correo de verificación.',tags:[],wf:'form'},
+  {code:'P-03',name:'Verificación correo',route:'/verificar-correo',notes:'Solo visible después del registro. Sin verificación no hay acceso.',tags:[],wf:'info'},
+  {code:'P-04',name:'Recuperar contraseña',route:'/recuperar-clave',notes:'Flujo estándar de reset por correo vía JavaMailSender.',tags:[],wf:'form'},
+  {code:'P-05',name:'Verificación factura (QR)',route:'/factura/verificar/:id',notes:'Página pública. Se abre al escanear el QR del PDF.',tags:['QR','PDF'],wf:'doc'},
+  {code:'A-01',name:'Dashboard principal',route:'/admin/dashboard',notes:'Primera pantalla al iniciar sesión. Carga en < 3 s.',tags:[],wf:'dash'},
+  {code:'A-02',name:'Gestión de usuarios',route:'/admin/usuarios',notes:'Roles asignables: vendedor, bodeguero, repartidor.',tags:[],wf:'list'},
+  {code:'A-03',name:'Detalle de usuario',route:'/admin/usuarios/:id',notes:'El admin no puede eliminar, solo desactivar.',tags:[],wf:'detail'},
+  {code:'A-04',name:'Gestión de clientes',route:'/admin/clientes',notes:'Cliente desactivado no puede usar el portal.',tags:[],wf:'list'},
+  {code:'A-05',name:'Detalle de cliente',route:'/admin/clientes/:id',notes:'Muestra clasificación: activo frecuente, inactivo, etc.',tags:[],wf:'detail'},
+  {code:'A-06',name:'Catálogo de productos',route:'/admin/catalogo',notes:'El catálogo es compartido; el stock varía por ruta.',tags:[],wf:'grid'},
+  {code:'A-07',name:'Inventario por ruta',route:'/admin/inventario',notes:'Vista de solo lectura para el admin.',tags:[],wf:'table'},
+  {code:'A-08',name:'Historial de facturas',route:'/admin/facturas',notes:'El admin puede cambiar estado de cualquier factura.',tags:['PDF'],wf:'list'},
+  {code:'A-09',name:'Detalle de factura',route:'/admin/facturas/:id',notes:'Log completo de cambios de estado.',tags:['PDF'],wf:'doc'},
+  {code:'A-10',name:'Panel de métricas',route:'/admin/metricas',notes:'Filtros: semana, mes, rango personalizado.',tags:[],wf:'dash'},
+  {code:'A-11',name:'Gastos operativos',route:'/admin/gastos',notes:'Saldo = facturas pagadas − gastos del período.',tags:[],wf:'list'},
+  {code:'A-12',name:'Análisis de clientes',route:'/admin/analisis-clientes',notes:'Calculado con SQL. Sin machine learning.',tags:[],wf:'table'},
+  {code:'A-13',name:'Historial notificaciones',route:'/admin/notificaciones',notes:'Estado: entregado / fallido. Reintento manual.',tags:[],wf:'list'},
+  {code:'A-14',name:'Configuración sistema',route:'/admin/configuracion',notes:'Cambios en rutas afectan inventario y clientes.',tags:[],wf:'settings'},
+  {code:'V-01',name:'Inicio vendedor',route:'/vendedor/inicio',notes:'Diseñado para uso con una mano.',tags:[],wf:'dash'},
+  {code:'V-02',name:'Tomar pedido',route:'/vendedor/pedidos/nuevo',notes:'Proceso < 3 min. Alerta si stock insuficiente.',tags:['OFFLINE'],wf:'cart'},
+  {code:'V-03',name:'Lista de facturas',route:'/vendedor/facturas',notes:'Solo facturas generadas por este vendedor.',tags:['PDF'],wf:'list'},
+  {code:'V-04',name:'Detalle de factura',route:'/vendedor/facturas/:id',notes:'El vendedor no puede anular, solo registrar cobros.',tags:['PDF'],wf:'doc'},
+  {code:'V-05',name:'Registrar cobro',route:'/vendedor/facturas/:id/cobro',notes:'El sistema valida que no se cobre factura anulada.',tags:[],wf:'form'},
+  {code:'V-06',name:'Cola offline',route:'/vendedor/offline',notes:'Sincroniza en < 30 s al recuperar señal.',tags:['OFFLINE'],wf:'queue'},
+  {code:'V-07',name:'Chat con clientes',route:'/vendedor/chat',notes:'Badge se actualiza sin recargar la página.',tags:['TIEMPO REAL'],wf:'chat'},
+  {code:'V-08',name:'Catálogo (consulta)',route:'/vendedor/catalogo',notes:'Solo lectura. El bodeguero gestiona el stock.',tags:[],wf:'grid'},
+  {code:'B-01',name:'Panel de bodega',route:'/bodeguero/inicio',notes:'Vista orientada a preparar los camiones.',tags:[],wf:'dash'},
+  {code:'B-02',name:'Inventario por ruta',route:'/bodeguero/inventario',notes:'Se actualiza sin recargar al confirmarse pedidos.',tags:['TIEMPO REAL'],wf:'table'},
+  {code:'B-03',name:'Registrar entrada',route:'/bodeguero/inventario/entrada',notes:'Al superar el mínimo se desactivan las alertas.',tags:[],wf:'form'},
+  {code:'B-04',name:'Alertas stock bajo',route:'/bodeguero/alertas',notes:'Las alertas llegan también por correo.',tags:[],wf:'list'},
+  {code:'B-05',name:'Chat con repartidor',route:'/bodeguero/chat',notes:'Canal directo para coordinar incidencias.',tags:['TIEMPO REAL'],wf:'chat'},
+  {code:'R-01',name:'Entregas del día',route:'/repartidor/entregas',notes:'Se carga con los datos del día al iniciar.',tags:[],wf:'list'},
+  {code:'R-02',name:'Actualizar estado entrega',route:'/repartidor/entregas/:id/estado',notes:'Botones 48px+ para uso al volante.',tags:['TIEMPO REAL'],wf:'action'},
+  {code:'R-03',name:'Detalle de pedido',route:'/repartidor/entregas/:id',notes:'Solo lectura. No puede modificar el pedido.',tags:[],wf:'detail'},
+  {code:'R-04',name:'Chat con bodega',route:'/repartidor/chat',notes:'Reemplaza llamadas telefónicas durante la ruta.',tags:['TIEMPO REAL'],wf:'chat'},
+  {code:'C-01',name:'Inicio del cliente',route:'/cliente/inicio',notes:'Paleta azul/morado. Diferente al panel interno.',tags:[],wf:'dash'},
+  {code:'C-02',name:'Catálogo + carrito',route:'/cliente/catalogo',notes:'Diseñado para uso sin capacitación. Máx 3 pasos.',tags:[],wf:'cart'},
+  {code:'C-03',name:'Confirmar pedido',route:'/cliente/catalogo/confirmar',notes:'El backend verifica stock antes de confirmar.',tags:[],wf:'form'},
+  {code:'C-04',name:'Seguimiento de pedido',route:'/cliente/pedidos/:id',notes:'El cliente no necesita recargar. Recibe correos.',tags:['TIEMPO REAL'],wf:'track'},
+  {code:'C-05',name:'Mis facturas',route:'/cliente/facturas',notes:'Solo sus propias facturas. Backend valida tenant_id.',tags:['PDF'],wf:'list'},
+  {code:'C-06',name:'Detalle de factura',route:'/cliente/facturas/:id',notes:'Facturas anuladas no tienen botón de descarga.',tags:['PDF'],wf:'doc'},
+  {code:'C-07',name:'Chat con vendedor',route:'/cliente/chat',notes:'Acceso global desde el botón flotante.',tags:['TIEMPO REAL'],wf:'chat'},
+  {code:'C-08',name:'Mi perfil',route:'/cliente/perfil',notes:'El cliente no puede cambiar su municipio ni ruta.',tags:[],wf:'settings'},
+];
+ 
+function makeWF(type){
+  const lines={
+    form:'<div class="wf-line accent short"></div><div class="wf-line"></div><div class="wf-line short"></div><div class="wf-line"></div><div class="wf-btn"></div>',
+    list:'<div class="wf-line accent"></div><div class="wf-line short"></div><div class="wf-line"></div><div class="wf-line short"></div><div class="wf-line xshort"></div>',
+    dash:'<div class="wf-line accent"></div><div style="display:flex;gap:3px;margin:3px 0"><div style="flex:1;height:18px;background:rgba(255,255,255,.08);border-radius:2px"></div><div style="flex:1;height:18px;background:rgba(255,255,255,.05);border-radius:2px"></div></div><div class="wf-line short"></div>',
+    doc:'<div class="wf-line accent"></div><div class="wf-line"></div><div class="wf-line"></div><div class="wf-line short"></div><div class="wf-line xshort"></div>',
+    detail:'<div class="wf-line accent short"></div><div class="wf-line"></div><div class="wf-line short"></div><div class="wf-line"></div>',
+    grid:'<div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:3px"><div style="height:14px;background:rgba(255,255,255,.1);border-radius:2px"></div><div style="height:14px;background:rgba(255,255,255,.07);border-radius:2px"></div><div style="height:14px;background:rgba(255,255,255,.1);border-radius:2px"></div><div style="height:14px;background:rgba(255,255,255,.07);border-radius:2px"></div></div><div class="wf-line xshort"></div>',
+    table:'<div class="wf-line accent"></div><div class="wf-line short"></div><div class="wf-line"></div><div class="wf-line short"></div>',
+    cart:'<div class="wf-line accent"></div><div class="wf-line short"></div><div style="height:18px;background:rgba(255,255,255,.08);border-radius:2px;margin:3px 0"></div><div class="wf-btn"></div>',
+    chat:'<div class="wf-line accent short"></div><div class="wf-line xshort" style="margin-left:auto"></div><div class="wf-line short"></div><div class="wf-line xshort" style="margin-left:auto"></div><div class="wf-btn" style="margin-left:auto"></div>',
+    queue:'<div class="wf-line accent"></div><div class="wf-line short"></div><div class="wf-line"></div><div class="wf-btn"></div>',
+    action:'<div class="wf-btn" style="width:90%;height:14px"></div><div class="wf-btn" style="width:90%;height:14px;margin-top:4px"></div>',
+    track:'<div style="height:6px;background:rgba(255,255,255,.15);border-radius:3px;margin-bottom:5px"><div style="width:60%;height:100%;background:rgba(255,255,255,.35);border-radius:3px"></div></div><div class="wf-line short"></div><div class="wf-line"></div>',
+    settings:'<div class="wf-line accent short"></div><div class="wf-line"></div><div class="wf-line short"></div><div class="wf-btn"></div>',
+    info:'<div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);margin:0 auto 6px"></div><div class="wf-line short" style="margin:0 auto"></div><div class="wf-btn" style="margin:4px auto 0"></div>',
+  };
+  return lines[type]||lines['list'];
+}
+ 
+screens.forEach(s=>{
+  const roleId=s.code.split('-')[0];
+  const r=roles[roleId];
+  const row=document.getElementById('row-'+roleId);
+  if(!row)return;
+  const card=document.createElement('div');
+  card.className='scard';
+  card.id='card-'+s.code;
+  card.style.background=r.color+'22';
+  const badgesHTML=s.tags.map(t=>`<span class="sbadge ${tagMap[t]||''}">${t}</span>`).join('');
+  card.innerHTML=`
+    <div class="scard-head" style="background:${r.color}">
+      <div class="scard-dots">
+        <span class="scard-dot" style="background:${r.dot1}"></span>
+        <span class="scard-dot" style="background:${r.dot2}"></span>
+        <span class="scard-dot" style="background:${r.dot3}"></span>
+      </div>
+      <span class="scard-code">${s.code}</span>
+    </div>
+    <div class="scard-body">
+      <div class="scard-name">${s.name}</div>
+      <div class="scard-route">${s.route}</div>
+      ${makeWF(s.wf)}
+      ${badgesHTML?`<div class="sbadges">${badgesHTML}</div>`:''}
+    </div>`;
+  card.addEventListener('mouseenter',e=>showTip(s,r,e));
+  card.addEventListener('mousemove',e=>moveTip(e));
+  card.addEventListener('mouseleave',hideTip);
+  row.appendChild(card);
+});
+ 
+const tip=document.getElementById('tooltip');
+function showTip(s,r,e){
+  document.getElementById('tt-code').textContent=s.code;
+  document.getElementById('tt-code').style.color=r.light;
+  document.getElementById('tt-name').textContent=s.name;
+  document.getElementById('tt-route').textContent=s.route;
+  document.getElementById('tt-notes').textContent=s.notes;
+  moveTip(e);tip.classList.add('show');
+}
+function moveTip(e){tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY-10)+'px'}
+function hideTip(){tip.classList.remove('show')}
+ 
+const connections=[
+  ['P-01','A-01'],['P-01','V-01'],['P-01','B-01'],['P-01','R-01'],['P-01','C-01'],
+  ['A-02','A-03'],['A-04','A-05'],['A-08','A-09'],
+  ['V-01','V-02'],['V-01','V-06'],['V-02','V-03'],['V-03','V-04'],['V-04','V-05'],
+  ['B-01','B-02'],['B-01','B-04'],['B-02','B-03'],['B-04','B-03'],
+  ['R-01','R-02'],['R-01','R-03'],
+  ['C-01','C-02'],['C-02','C-03'],['C-03','C-04'],['C-01','C-05'],['C-05','C-06'],
+];
+ 
+const colorMap={P:'#9a8c98',A:'#c77dff',V:'#ff7043',B:'#4caf50',R:'#4fc3f7',C:'#ce93d8'};
+ 
+function drawLines(){
+  const svg=document.getElementById('svglines');
+  const canvas=document.getElementById('canvas');
+  const cRect=canvas.getBoundingClientRect();
+  svg.innerHTML='';
+  connections.forEach(([a,b])=>{
+    const ea=document.getElementById('card-'+a);
+    const eb=document.getElementById('card-'+b);
+    if(!ea||!eb)return;
+    const ra=ea.getBoundingClientRect();
+    const rb=eb.getBoundingClientRect();
+    const x1=ra.left+ra.width/2-cRect.left;
+    const y1=ra.top+ra.height/2-cRect.top;
+    const x2=rb.left+rb.width/2-cRect.left;
+    const y2=rb.top+rb.height/2-cRect.top;
+    const role=a.split('-')[0];
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    const mx=(x1+x2)/2;
+    path.setAttribute('d',`M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`);
+    path.setAttribute('class','conn');
+    path.setAttribute('stroke',colorMap[role]||'#888');
+    svg.appendChild(path);
+  });
+  const wrap=document.querySelector('.sitemap-wrap');
+  svg.setAttribute('viewBox',`0 0 ${wrap.scrollWidth} ${wrap.scrollHeight}`);
+}
+ 
+setTimeout(drawLines,150);
+window.addEventListener('resize',drawLines);
+</script>
+</body>
+</html>
+ 
+
+
