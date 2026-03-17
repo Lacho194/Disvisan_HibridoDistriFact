@@ -1,68 +1,3 @@
-
-
-DisviFact_SiteMap_Disvisan.docx
-docx
-
-por favor tngo esto para hacer un sitemap por favor hacerlo map enserio un bosquejo por favor que se veo
-
-4:00 p. m.
-
-Preparó explicación breve del widget sitemap
-Preparó explicación breve del widget sitemap
-
-
-¡Aquí está tu mapa visual completo! Cómo usarlo:
-
-Explora por rol — haz clic en cualquier tarjeta para ver el detalle completo: subsecciones, ruta URL y notas de diseño. Puedes filtrar roles usando los botones de la leyenda de arriba.
-
-Badges de cada pantalla:
-
-🟠 OFFLINE — V-02 y V-06 (funcionan sin internet con IndexedDB)
-🟢 TIEMPO REAL — V-07, B-02, B-05, R-02, R-04, C-04, C-07 (WebSocket + STOMP)
-🟣 PDF — generación con iText (A-08, A-09, V-03, V-04, C-05, C-06, P-05)
-🟡 QR — solo P-05 (verificación pública sin login)
-Resumen rápido: 37 pantallas, 5 roles + acceso público, las únicas offline son las del vendedor en campo, y el chat es el único componente compartido entre 4 roles distintos.
-
-1773780572397_image.png
-1773780591283_image.png
-darme como un mapa algo asi ensrio un site map
-
-4:04 p. m.
-
-Construyendo sitemap interactivo con tarjetas jerárquicas conectadas
-Construyendo sitemap interactivo con tarjetas jerárquicas conectadas
-
-
-¡Ahí está el sitemap visual estilo mapa real! Cada tarjeta tiene:
-
-Cabecera con color del rol — igual a los sitemaps de referencia
-Código de pantalla (P-01, A-03, etc.)
-Wireframe interno simulando el contenido de cada pantalla (formularios, listas, dashboards, chats...)
-Badges de OFFLINE, TIEMPO REAL, PDF, QR
-Líneas curvas conectando pantallas relacionadas (login → dashboards, lista → detalle, etc.)
-Hover tooltip con ruta URL y nota de diseño
-Pasa el mouse por cualquier tarjeta para ver los detalles. Las líneas siguen el color de cada rol.
-
-Save this visual from earlier as an artifact: "disvifact_sitemap_visual"
-
-4:06 p. m.
-
-Orchestrated recreation and preservation of visual widget artifact
-Orchestrated recreation and preservation of visual widget artifact
-¡Listo! El sitemap está guardado como archivo HTML. Ábrelo en cualquier navegador y tendrás el mapa completo con tooltips interactivos y líneas de conexión, sin necesidad de internet ni instalaciones.
-
-Disvifact sitemap visual
-Code · HTML 
-
-
-Want to be notified when Claude responds?
-
-
-
-Claude is AI and can make mistakes. Please double-check responses.
-Disvifact sitemap visual · HTML
-Copy
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -192,7 +127,7 @@ const screens=[
   {code:'C-07',name:'Chat con vendedor',route:'/cliente/chat',notes:'Acceso global desde el botón flotante.',tags:['TIEMPO REAL'],wf:'chat'},
   {code:'C-08',name:'Mi perfil',route:'/cliente/perfil',notes:'El cliente no puede cambiar su municipio ni ruta.',tags:[],wf:'settings'},
 ];
- 
+
 function makeWF(type){
   const lines={
     form:'<div class="wf-line accent short"></div><div class="wf-line"></div><div class="wf-line short"></div><div class="wf-line"></div><div class="wf-btn"></div>',
@@ -212,7 +147,7 @@ function makeWF(type){
   };
   return lines[type]||lines['list'];
 }
- 
+
 screens.forEach(s=>{
   const roleId=s.code.split('-')[0];
   const r=roles[roleId];
@@ -243,7 +178,7 @@ screens.forEach(s=>{
   card.addEventListener('mouseleave',hideTip);
   row.appendChild(card);
 });
- 
+
 const tip=document.getElementById('tooltip');
 function showTip(s,r,e){
   document.getElementById('tt-code').textContent=s.code;
@@ -255,7 +190,7 @@ function showTip(s,r,e){
 }
 function moveTip(e){tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY-10)+'px'}
 function hideTip(){tip.classList.remove('show')}
- 
+
 const connections=[
   ['P-01','A-01'],['P-01','V-01'],['P-01','B-01'],['P-01','R-01'],['P-01','C-01'],
   ['A-02','A-03'],['A-04','A-05'],['A-08','A-09'],
@@ -264,9 +199,9 @@ const connections=[
   ['R-01','R-02'],['R-01','R-03'],
   ['C-01','C-02'],['C-02','C-03'],['C-03','C-04'],['C-01','C-05'],['C-05','C-06'],
 ];
- 
+
 const colorMap={P:'#9a8c98',A:'#c77dff',V:'#ff7043',B:'#4caf50',R:'#4fc3f7',C:'#ce93d8'};
- 
+
 function drawLines(){
   const svg=document.getElementById('svglines');
   const canvas=document.getElementById('canvas');
@@ -293,12 +228,9 @@ function drawLines(){
   const wrap=document.querySelector('.sitemap-wrap');
   svg.setAttribute('viewBox',`0 0 ${wrap.scrollWidth} ${wrap.scrollHeight}`);
 }
- 
+
 setTimeout(drawLines,150);
 window.addEventListener('resize',drawLines);
 </script>
 </body>
 </html>
- 
-
-
